@@ -43,6 +43,8 @@ import AdminProtectedRoute from "./pages/admin/adminProtected";
 
 import AdminLogin from "./pages/admin/adminLogin";
 
+import AdminSettings from "./pages/admin/adminSettings";
+
 function Router() {
   return (
     <Switch>
@@ -76,10 +78,17 @@ function Router() {
       </Route>
 
       <Route path="/admin/login">
-        <AdminLayout>
-          <AdminLogin />
-        </AdminLayout>
+        <AdminLogin />
       </Route>
+
+      <Route path="/admin/settings">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <AdminSettings />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
 
       <Route path="/admin/categories">
         <AdminProtectedRoute>

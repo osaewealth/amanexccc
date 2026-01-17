@@ -25,6 +25,9 @@ export default function About() {
 
   const [storyVideoUrl, setStoryVideoUrl] = useState<string | null>(null);
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   const purposeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRef = useYouTubeAutoplay({ threshold: 0.6, rootMargin: '0px 0px -100px 0px' });
   
@@ -48,7 +51,11 @@ export default function About() {
       const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
   
       setStoryVideoUrl(embedUrl);
-    });
+    })
+    .catch(() => {
+      setError("Failed to load video url");
+    })
+    .finally(() => setLoading(false));
   }, []);
   
 
@@ -76,6 +83,14 @@ export default function About() {
 
     return () => observer.disconnect();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading ...
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen">
@@ -151,6 +166,9 @@ export default function About() {
             </div>
             <div className="relative">
               <div className="rounded-xl shadow-2xl overflow-hidden h-full">
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
                 {storyVideoUrl && (
                   <iframe
                     ref={videoRef}

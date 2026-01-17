@@ -4,10 +4,28 @@ import { JobService } from "@/services/jobService";
 
 export default function JobList() {
   const [jobs, setJobs] = useState<any[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    JobService.getAll().then(res => setJobs(res.data));
+    JobService.getAll().then(res => setJobs(res.data))
+    .catch(() => {
+      setError("Failed to load categories");
+    })
+    .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading jobs...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
   const toggleStatus = async (id: string) => {
     const res = await JobService.toggle(id);

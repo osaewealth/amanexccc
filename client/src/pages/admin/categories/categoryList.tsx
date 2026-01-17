@@ -5,10 +5,29 @@ import { CategoryService } from "@/services/categoryService";
 export default function CategoryList() {
   const [categories, setCategories] = useState<any[]>([]);
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     CategoryService.getAll()
-      .then(res => setCategories(res.data));
+      .then(res => setCategories(res.data))
+      .catch(() => {
+        setError("Failed to load categories");
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading categories...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
   return (
     <div>

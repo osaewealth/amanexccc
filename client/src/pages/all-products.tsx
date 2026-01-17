@@ -189,6 +189,7 @@ export default function Fragrance() {
 
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
 
   useEffect(() => {
@@ -197,6 +198,9 @@ export default function Fragrance() {
         // only active products (safe guard)
         const activeProducts = res.data.filter((p: any) => p.is_active);
         setProducts(activeProducts);
+      })
+      .catch(() => {
+        setError("Failed to load products");
       })
       .finally(() => setLoading(false));
   }, []);  
@@ -210,6 +214,10 @@ export default function Fragrance() {
         <div className="py-20 text-center text-coty-gray">
           Loading products...
         </div>
+      )}
+
+      {error && (
+        <p className="text-red-500 text-sm">{error}</p>
       )}
 
 

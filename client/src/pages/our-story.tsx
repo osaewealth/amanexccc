@@ -76,6 +76,9 @@ export default function OurStory() {
 
   const [missionVideoUrl, setMissionVideoUrl] = useState<string | null>(null);
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     ContentService.getMissionVideo().then((res) => {
@@ -89,7 +92,11 @@ export default function OurStory() {
       const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
   
       setMissionVideoUrl(embedUrl);
-    });
+    })
+    .catch(() => {
+      setError("Failed to load video url");
+    })
+    .finally(() => setLoading(false));;
   }, []);
   
 
@@ -248,6 +255,14 @@ export default function OurStory() {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <StandardHeader />
@@ -325,6 +340,9 @@ export default function OurStory() {
             </div>
             <div className="relative">
               <div className="rounded-lg shadow-xl overflow-hidden h-full">
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
                 {missionVideoUrl && (
                   <iframe
                     ref={videoRef}

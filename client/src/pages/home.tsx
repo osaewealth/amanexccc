@@ -49,6 +49,7 @@ export default function Home() {
   const [, navigate] = useLocation();
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
   
   const heroText = "WE ARE\nAMANEX";
   const { typewriterIndex } = useTypewriter({ 
@@ -81,6 +82,9 @@ export default function Home() {
       // Only active categories
       const activeCategories = res.data.filter((c: any) => c.is_active);
       setCategories(activeCategories);
+    })
+    .catch(() => {
+      setError("Failed to load categories");
     })
     .finally(() => setLoading(false));
   }, []);
@@ -199,6 +203,7 @@ export default function Home() {
     }
   };
 
+
   return (
     <div className="min-h-screen">
       <HomeHeader />
@@ -301,8 +306,11 @@ export default function Home() {
 
           {loading && (
             <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
-              Loading products...
+              Loading categories...
             </div>
+          )}
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
           )}
 
           {/* Category Carousel with Arrows */}

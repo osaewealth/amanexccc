@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
 import logo from '@/assets/logo.png';
+import { useLocation } from "wouter";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+
+    const navigate = useLocation();
 
     const logout = () => {
         localStorage.removeItem("adminToken");
         localStorage.removeItem("adminUser");
         window.location.href = "/admin/login";
       };
+
+    const handleNavigation = () => {
+        window.location.href ='/admin';
+    }
       
     return (
       <div className="min-h-screen flex bg-gray-100">
@@ -15,7 +22,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {/* Sidebar */}
         <aside className="w-70 bg-coty-navy text-white p-6">
           <div className="w-full flex items-center gap-2 mb-12">
-            <img src={logo} alt="Amanex Logo" className="h-12" />
+            <img src={logo} alt="Amanex Logo" className="h-12" onClick={handleNavigation}/>
             <h2 className="text-xl font-bold">Amanex Admin</h2>
           </div>
   
@@ -33,6 +40,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <a href="/admin/content/mission" className="hover:text-blue-500 transition-all">Our Mission</a>
 
             <a href="/admin/content/story" className="hover:text-blue-500 transition-all">Our Story</a>
+
+            <a href="/admin/settings" className="hover:text-blue-500 transition-all">Settings</a>
             
             <a href="#" onClick={logout} className="hover:text-blue-500 transition-all">Logout</a>
           </nav>

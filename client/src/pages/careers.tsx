@@ -23,6 +23,8 @@ export default function Careers() {
 
   const [loadingJobs, setLoadingJobs] = useState(true);
 
+  const [error, setError] = useState("");
+
 
   // Default job openings data
   // const defaultJobs = [
@@ -146,6 +148,9 @@ export default function Careers() {
         }));
   
       setJobOpenings(formattedJobs);
+    })
+    .catch(() => {
+      setError("Failed to load categories");
     })
     .finally(() => setLoadingJobs(false));
   }, []);
@@ -408,6 +413,10 @@ export default function Careers() {
             <p className="text-center text-gray-500">
               No job openings at the moment. Please check back later.
             </p>
+          )}
+
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
           )}
           
           <div className="space-y-8">

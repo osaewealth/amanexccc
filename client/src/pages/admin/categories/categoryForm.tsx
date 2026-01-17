@@ -10,6 +10,9 @@ export default function CategoryForm({ id }: { id?: string }) {
   const [isActive, setIsActive] = useState(true);
   const [preview, setPreview] = useState<string | null>(null);
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (id) {
       CategoryService.getOne(id)
@@ -17,9 +20,25 @@ export default function CategoryForm({ id }: { id?: string }) {
           setName(res.data.name);
           setIsActive(res.data.is_active);
           setPreview(res.data.image);
-        });
+        })
+        .catch(() => {
+          setError("Failed to load categories");
+        })
+        .finally(() => setLoading(false));;
     }
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
   const handleSubmit = async () => {
     const formData = new FormData();

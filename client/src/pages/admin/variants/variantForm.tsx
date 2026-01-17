@@ -7,14 +7,33 @@ export default function VariantForm({ id }: { id?: string }) {
 
   const [name, setName] = useState("");
 
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     if (id) {
         VariantService.getOne(id)
         .then(res => {
           setName(res.data.name);
-        });
+        })
+        .catch(() => {
+            setError("Failed to load variant");
+          })
+          .finally(() => setLoading(false));;
     }
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
   const handleSubmit = async () => {
     const formData = new FormData();

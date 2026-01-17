@@ -23,12 +23,25 @@ export default function ProductForm({ id }: { id?: string }) {
   const [selectedVariants, setSelectedVariants] = useState<string[]>([]);
   const [newVariantName, setNewVariantName] = useState("");
   const [creatingVariant, setCreatingVariant] = useState(false);
+  const [error, setError] = useState("");
+  const [loadingProduct, setLoadingProduct] = useState(true);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingVariants, setLoadingVariants] = useState(true);
 
 
 
   useEffect(() => {
-    CategoryService.getAll().then(res => setCategories(res.data));
-    VariantService.getAll().then(res => setVariants(res.data));
+    CategoryService.getAll().then(res => setCategories(res.data))
+    .catch(() => {
+      setError("Failed to load categories");
+    })
+    .finally(() => setLoadingCategories(false));
+
+    VariantService.getAll().then(res => setVariants(res.data))
+    .catch(() => {
+      setError("Failed to load variants");
+    })
+    .finally(() => setLoadingVariants(false));;
   
     if (id) {
       ProductService.getOne(id).then(res => {
@@ -43,9 +56,25 @@ export default function ProductForm({ id }: { id?: string }) {
         setRating(p.rating ?? "");
         setPreview(p.image);
         setSelectedVariants(p.variants.map((v: any) => String(v.id)));
-      });
+      })
+      .catch(() => {
+        setError("Failed to load product");
+      })
+      .finally(() => setLoadingProduct(false));
     }
   }, [id]);
+
+  if (loadingCategories || loadingProduct || loadingVariants) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
 
   const createVariantInline = async () => {

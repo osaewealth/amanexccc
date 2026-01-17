@@ -4,11 +4,29 @@ import { VariantService } from "@/services/variantService";
 
 export default function VariantList() {
   const [variants, setVariants] = useState<any[]>([]);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     VariantService.getAll()
-      .then(res => setVariants(res.data));
+      .then(res => setVariants(res.data))
+      .catch(() => {
+        setError("Failed to load categories");
+      })
+      .finally(() => setLoading(false));
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading variants...
+      </div>
+    );
+  }
+
+  if (error) {
+    return <p className="text-red-500 text-sm">{error}</p>;
+  }
 
   return (
     <div>

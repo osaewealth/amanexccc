@@ -127,19 +127,29 @@ export default function OurBrands() {
   const [loading, setLoading] = useState(true);
 
   const [, navigate] = useLocation();
+  const [error, setError] = useState("");
 
   useEffect(() => {
     CategoryService.getAll().then(res => {
       // Only active categories
       const activeCategories = res.data.filter((c: any) => c.is_active);
       setCategories(activeCategories);
-    });
+    })
+    .catch(() => {
+      setError("Failed to load categories");
+    })
+    .finally(() => setLoading(false));
+
 
     ProductService.getBestSellers()
       .then(res => {
+        setLoading(true);
         // only active products (safe guard)
         const activeProducts = res.data.filter((p: any) => p.is_active);
         setBestSellers(activeProducts);
+      })
+      .catch(() => {
+        setError("Failed to load best selling products");
       })
       .finally(() => setLoading(false));
   }, []);
@@ -158,10 +168,13 @@ export default function OurBrands() {
 
       {loading && (
         <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
-          Loading products...
+          Loading...
         </div>
       )}
 
+      {error && (
+        <p className="text-red-500 text-sm">{error}</p>
+      )}
 
       {/* Hero Section */}
       <section 

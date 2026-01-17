@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
 export default function AdminLogin() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -29,7 +29,7 @@ export default function AdminLogin() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       const data = await res.json();
@@ -38,7 +38,8 @@ export default function AdminLogin() {
         throw new Error(data.error || "Login failed");
       }
 
-      localStorage.setItem("adminToken", data.access);
+      localStorage.setItem("admin_access_token", data.access);
+      localStorage.setItem("admin_refresh_token", data.refresh);
       localStorage.setItem("adminUser", JSON.stringify(data.admin));
 
       window.location.href = "/admin";
@@ -60,11 +61,11 @@ export default function AdminLogin() {
         {error && <p className="text-red-500 mb-4">{error}</p>}
 
         <input
-          type="email"
+          type="text"
           placeholder="Admin email"
           className="w-full border p-3 rounded mb-4"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
 
         <input
