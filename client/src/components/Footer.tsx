@@ -1,8 +1,22 @@
 import React from 'react';
 import { Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
 import logo from '@/assets/logo.png';
+import { useEffect, useState } from "react";
+import { CategoryService } from "@/services/categoryService";
+import { Link } from 'wouter';
+
 
 export default function Footer() {
+
+  const [categories, setCategories] = useState<any[]>([]);
+
+  useEffect(() => {
+    CategoryService.getAll()
+      .then((res) => setCategories(res.data))
+      .catch(() => setCategories([]));
+  }, []);
+
+  
   return (
     <footer className="bg-coty-navy text-white" style={{ width: '100vw', marginLeft: 'calc(-50vw + 50%)' }}>
       <div className="w-full px-4 sm:px-6 lg:px-8 lg:max-w-7xl lg:mx-auto py-12">
@@ -73,13 +87,41 @@ export default function Footer() {
               {/* Products */}
             <div>
                 <h4 className="text-lg font-semibold mb-4">Products</h4>
-                <ul className="space-y-2">
+                {/* <ul className="space-y-2">
                   <li><a href="/personal-care" className="text-gray-300 hover:text-white transition-colors">Personal Care</a></li>
                   <li><a href="/home-care" className="text-gray-300 hover:text-white transition-colors">Home Care</a></li>
                   <li><a href="/fragrance" className="text-gray-300 hover:text-white transition-colors">Fragrance</a></li>
                   <li><a href="/air-fresheners" className="text-gray-300 hover:text-white transition-colors">Air Fresheners</a></li>
                   <li><a href="/cleaning-products" className="text-gray-300 hover:text-white transition-colors">Cleaning Products</a></li>
+              </ul> */}
+              <ul className="space-y-2">
+                {categories.slice(0, 6).map((category) => (
+                  <li key={category.id}>
+                    <Link
+                      href={`/category/${category.id}`}
+                      className="text-gray-300 hover:text-white transition-colors"
+                    >
+                      {category.name}
+                    </Link>
+                  </li>
+                ))}
+
+                {categories.length === 0 && (
+                  <li className="text-gray-400 text-sm">No categories available</li>
+                )}
+
+                {categories.length > 6 && (
+                  <li>
+                    <a
+                      href="/categories"
+                      className="text-gray-400 hover:text-white transition-colors"
+                    >
+                      View all categories →
+                    </a>
+                  </li>
+                )}
               </ul>
+
               </div>
             </div>
           </div>

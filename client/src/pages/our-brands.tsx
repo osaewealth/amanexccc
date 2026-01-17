@@ -29,91 +29,121 @@ import redperf from "@/assets/productimages/redperf.png";
 import sanitizer60ml from "@/assets/productimages/sanitizer-60ml.png";
 import sanitizer350ml from "@/assets/productimages/sanitizer-350ml.png";
 
+import { useEffect, useState } from "react";
+import { ProductService } from "@/services/productService";
+import { CategoryService } from "@/services/categoryService";
+import { useLocation } from "wouter";
+
+
 // Import hero background image
 import ourbrandsBg from "@/assets/ourbrands.png";
 
 export default function OurBrands() {
-  const productCategories = [
-    {
-      name: "AIR FRESHENER",
-      description: "Transform your living spaces with our invigorating air fresheners that create a welcoming atmosphere.",
-      image: airfresherscat,
-      features: ["Long-lasting fragrance", "Natural ingredients", "Multiple scents available"]
-    },
-    {
-      name: "PERFUME & BODY SPLASH",
-      description: "Luxurious perfumes and body splashes that define your personal style and leave lasting impressions.",
-      image: perfumes,
-      features: ["Premium fragrances", "Long-lasting scent", "Elegant packaging"]
-    },
-    {
-      name: "LIQUID SOAP",
-      description: "Multipurpose liquid soaps that provide effective cleaning while being gentle on your skin.",
-      image: liquidsoup,
-      features: ["Gentle formula", "Antibacterial protection", "Moisturizing properties"]
-    },
-    {
-      name: "SHOWER GEL",
-      description: "Moisturizing shower gels that keep you feeling refreshed and protected all day long.",
-      image: showergelcat,
-      features: ["Deep cleansing", "Skin nourishment", "Refreshing scents"]
-    },
-    {
-      name: "INSECTICIDE SPRAY",
-      description: "Effective insecticide sprays that ensure your home is always immaculate and safe.",
-      image: insertspray,
-      features: ["Powerful protection", "Safe for family use", "Long-lasting effect"]
-    },
-    {
-      name: "GLASS CLEANER",
-      description: "Professional-grade glass cleaners that deliver streak-free shine and crystal-clear results.",
-      image: glasscleaners,
-      features: ["Streak-free formula", "Quick drying", "Safe for all surfaces"]
-    },
-    {
-      name: "FABRIC SOFTENER",
-      description: "Gentle fabric softeners that keep your clothes soft, fresh, and beautifully scented.",
-      image: softners,
-      features: ["Softens fabrics", "Long-lasting freshness", "Color-safe formula"]
-    },
-    {
-      name: "SANITIZER",
-      description: "Protective hand sanitizers that keep you feeling refreshed and protected throughout the day.",
-      image: sanitizer60ml,
-      features: ["99.9% germ protection", "Non-drying formula", "Portable design"]
-    }
-  ];
+  // const productCategories = [
+  //   {
+  //     name: "AIR FRESHENER",
+  //     description: "Transform your living spaces with our invigorating air fresheners that create a welcoming atmosphere.",
+  //     image: airfresherscat,
+  //     features: ["Long-lasting fragrance", "Natural ingredients", "Multiple scents available"]
+  //   },
+  //   {
+  //     name: "PERFUME & BODY SPLASH",
+  //     description: "Luxurious perfumes and body splashes that define your personal style and leave lasting impressions.",
+  //     image: perfumes,
+  //     features: ["Premium fragrances", "Long-lasting scent", "Elegant packaging"]
+  //   },
+  //   {
+  //     name: "LIQUID SOAP",
+  //     description: "Multipurpose liquid soaps that provide effective cleaning while being gentle on your skin.",
+  //     image: liquidsoup,
+  //     features: ["Gentle formula", "Antibacterial protection", "Moisturizing properties"]
+  //   },
+  //   {
+  //     name: "SHOWER GEL",
+  //     description: "Moisturizing shower gels that keep you feeling refreshed and protected all day long.",
+  //     image: showergelcat,
+  //     features: ["Deep cleansing", "Skin nourishment", "Refreshing scents"]
+  //   },
+  //   {
+  //     name: "INSECTICIDE SPRAY",
+  //     description: "Effective insecticide sprays that ensure your home is always immaculate and safe.",
+  //     image: insertspray,
+  //     features: ["Powerful protection", "Safe for family use", "Long-lasting effect"]
+  //   },
+  //   {
+  //     name: "GLASS CLEANER",
+  //     description: "Professional-grade glass cleaners that deliver streak-free shine and crystal-clear results.",
+  //     image: glasscleaners,
+  //     features: ["Streak-free formula", "Quick drying", "Safe for all surfaces"]
+  //   },
+  //   {
+  //     name: "FABRIC SOFTENER",
+  //     description: "Gentle fabric softeners that keep your clothes soft, fresh, and beautifully scented.",
+  //     image: softners,
+  //     features: ["Softens fabrics", "Long-lasting freshness", "Color-safe formula"]
+  //   },
+  //   {
+  //     name: "SANITIZER",
+  //     description: "Protective hand sanitizers that keep you feeling refreshed and protected throughout the day.",
+  //     image: sanitizer60ml,
+  //     features: ["99.9% germ protection", "Non-drying formula", "Portable design"]
+  //   }
+  // ];
 
-  const bestSellers = [
-    {
-      name: "BR4",
-      category: "Air Freshener",
-      rating: 4.8,
-      price: "₵25.00",
-      image: airfreshersviolet
-    },
-    {
-      name: "BR11",
-      category: "Perfume",
-      rating: 4.9,
-      price: "₵45.00",
-      image: redperf
-    },
-    {
-      name: "BR7",
-      category: "Liquid Soap",
-      rating: 4.7,
-      price: "₵18.00",
-      image: liquidsoupyellow
-    },
-    {
-      name: "BR1",
-      category: "Shower Gel",
-      rating: 4.8,
-      price: "₵22.00",
-      image: showergelyellow
-    }
-  ];
+  // const bestSellers = [
+  //   {
+  //     name: "BR4",
+  //     category: "Air Freshener",
+  //     rating: 4.8,
+  //     price: "₵25.00",
+  //     image: airfreshersviolet
+  //   },
+  //   {
+  //     name: "BR11",
+  //     category: "Perfume",
+  //     rating: 4.9,
+  //     price: "₵45.00",
+  //     image: redperf
+  //   },
+  //   {
+  //     name: "BR7",
+  //     category: "Liquid Soap",
+  //     rating: 4.7,
+  //     price: "₵18.00",
+  //     image: liquidsoupyellow
+  //   },
+  //   {
+  //     name: "BR1",
+  //     category: "Shower Gel",
+  //     rating: 4.8,
+  //     price: "₵22.00",
+  //     image: showergelyellow
+  //   }
+  // ];
+
+  
+  const [categories, setCategories] = useState([]);
+  const [bestSellers, setBestSellers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [, navigate] = useLocation();
+
+  useEffect(() => {
+    CategoryService.getAll().then(res => {
+      // Only active categories
+      const activeCategories = res.data.filter((c: any) => c.is_active);
+      setCategories(activeCategories);
+    });
+
+    ProductService.getBestSellers()
+      .then(res => {
+        // only active products (safe guard)
+        const activeProducts = res.data.filter((p: any) => p.is_active);
+        setBestSellers(activeProducts);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
 
   const heroText = "OUR\nBRANDS";
   const { typewriterIndex } = useTypewriter({ 
@@ -125,6 +155,13 @@ export default function OurBrands() {
   return (
     <div className="min-h-screen">
       <StandardHeader />
+
+      {loading && (
+        <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
+          Loading products...
+        </div>
+      )}
+
 
       {/* Hero Section */}
       <section 
@@ -188,78 +225,44 @@ export default function OurBrands() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-            {/* Air Fresheners Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/air-fresheners'}>
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
-                  src={airfresherscat}
-                  alt="Air Fresheners" 
-                  className="w-full h-full object-cover"
-                />
+            {categories.map((category: any) => (
+              <div
+                key={category.id}
+                className="group flex flex-col items-center text-center cursor-pointer"
+                onClick={() => navigate(`/category/${category.id}`)}
+              >
+                <div
+                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow  duration-300">
+                  <img
+                    src={category.image}
+                    alt={category.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="text-base sm:text-lg font-semibold text-coty-navy">
+                  {category.name}
+                </h3>
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">AIR FRESHENERS</h3>
-            </div>
+            ))}
 
-            {/* Perfumes & Body Care Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/perfumes-body-care'}>
+            {/* View All */}
+            <div
+              className="group flex flex-col items-center text-center cursor-pointer"
+              onClick={() => navigate("/all-products")}
+            >
               <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
-                  src={perfumes}
-                  alt="Perfumes & Body Care" 
-                  className="w-full h-full object-contain"
-                />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">PERFUMES & BODY CARE</h3>
-            </div>
-
-            {/* Cleaning Products Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/cleaning-products'}>
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
-                  src={glasscleaners}
-                  alt="Cleaning Products" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">CLEANING PRODUCTS</h3>
-            </div>
-
-            {/* Personal Care Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/personal-care'}>
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
-                  src={showergelcat}
-                  alt="Personal Care" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">PERSONAL CARE</h3>
-            </div>
-
-            {/* Home Care Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/home-care'}>
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
-                  src={softners}
-                  alt="Home Care" 
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">HOME CARE</h3>
-            </div>
-
-            {/* View All Products Card */}
-            <div className="group flex flex-col items-center text-center cursor-pointer" onClick={() => window.location.href = '/all-products'}>
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img 
+                <img
                   src={allproducts}
-                  alt="View All Products" 
+                  alt="View All Products"
                   className="w-full h-full object-cover"
                 />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">VIEW ALL PRODUCTS</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">
+                VIEW ALL PRODUCTS
+              </h3>
             </div>
           </div>
+
 
           <div className="text-center">
             <a href="/contact-us" className="inline-flex items-center gap-2 px-6 py-3 bg-coty-navy text-white font-medium rounded-lg hover:bg-coty-gold hover:text-coty-navy transition-all duration-300 group shadow-md">
@@ -281,8 +284,8 @@ export default function OurBrands() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {bestSellers.map((product, index) => (
-              <Card key={index} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 border-2 border-transparent hover:border-coty-navy/20 group">
+            {bestSellers.map((product: any) => (
+              <Card key={product.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 border-2 border-transparent hover:border-coty-navy/20 group">
                 <div className="text-center mb-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <img 
@@ -292,7 +295,7 @@ export default function OurBrands() {
                     />
                   </div>
                   <h3 className="text-lg font-bold text-coty-navy mb-2 group-hover:text-coty-navy/80 transition-colors duration-300">{product.name}</h3>
-                  <p className="text-coty-gray text-sm mb-3">{product.category}</p>
+                  <p className="text-coty-gray text-sm mb-3">{product.product_type}</p>
                   <div className="flex items-center justify-center mb-4">
                     {[...Array(5)].map((_, i) => (
                       <Star 
@@ -300,7 +303,11 @@ export default function OurBrands() {
                         className={`h-4 w-4 ${i < Math.floor(product.rating) ? 'text-yellow-400 fill-current' : 'text-gray-300'}`} 
                       />
                     ))}
-                    <span className="text-sm text-coty-gray ml-2">({product.rating})</span>
+                    {product.rating && (
+                      <span className="text-sm text-coty-gray ml-2">
+                        ({product.rating})
+                      </span>
+                    )}
                   </div>
                   <div className="text-sm text-coty-gray bg-coty-gray-light px-3 py-2 rounded-full inline-block">
                     Best Seller

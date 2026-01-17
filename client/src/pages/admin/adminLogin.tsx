@@ -1,0 +1,87 @@
+import { useState, useEffect } from "react";
+import { useLocation } from "wouter";
+
+export default function AdminLogin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  const [, navigate] = useLocation()
+  
+
+  useEffect(() => {
+    const token = localStorage.getItem("adminToken");
+
+    if (token) {
+        navigate("/admin");
+    }
+  }, []);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:8000/api/admin/login/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || "Login failed");
+      }
+
+      localStorage.setItem("adminToken", data.access);
+      localStorage.setItem("adminUser", JSON.stringify(data.admin));
+
+      window.location.href = "/admin";
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-8 rounded-xl shadow-md w-full max-w-md"
+      >
+        <h1 className="text-2xl font-bold mb-6 text-center">Admin Login</h1>
+
+        {error && <p className="text-red-500 mb-4">{error}</p>}
+
+        <input
+          type="email"
+          placeholder="Admin email"
+          className="w-full border p-3 rounded mb-4"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          className="w-full border p-3 rounded mb-6"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button
+          disabled={loading}
+          className="w-full bg-black text-white py-3 rounded hover:bg-gray-800"
+        >
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+    </div>
+  );
+}

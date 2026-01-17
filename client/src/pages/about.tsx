@@ -19,7 +19,12 @@ import confidenceIcon from '@/icons/confidence.png';
 import creativityIcon from '@/icons/creativity.png';
 import connectionIcon from '@/icons/foster.png';
 
+import { ContentService } from '@/services/contentService'
+
 export default function About() {
+
+  const [storyVideoUrl, setStoryVideoUrl] = useState<string | null>(null);
+
   const purposeRefs = useRef<(HTMLDivElement | null)[]>([]);
   const videoRef = useYouTubeAutoplay({ threshold: 0.6, rootMargin: '0px 0px -100px 0px' });
   
@@ -29,6 +34,23 @@ export default function About() {
     speed: 200, 
     delay: 15000 
   });
+
+
+  useEffect(() => {
+    ContentService.getStoryVideo().then((res) => {
+      const youtubeUrl = res.data.youtube_url;
+  
+      // Convert youtu.be or watch?v= to embed format
+      const videoId = youtubeUrl.includes("youtu.be")
+        ? youtubeUrl.split("youtu.be/")[1]
+        : youtubeUrl.split("v=")[1];
+  
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+  
+      setStoryVideoUrl(embedUrl);
+    });
+  }, []);
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -129,17 +151,19 @@ export default function About() {
             </div>
             <div className="relative">
               <div className="rounded-xl shadow-2xl overflow-hidden h-full">
-                <iframe
-                  ref={videoRef}
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/rrsyKhsZN-k?si=_Ntt1XeGpDIn_mOy&enablejsapi=1&origin=https://amanex.com"
-                  title="Amanex Company Video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="w-full h-full min-h-[400px]"
-                ></iframe>
+                {storyVideoUrl && (
+                  <iframe
+                    ref={videoRef}
+                    width="100%"
+                    height="100%"
+                    src={storyVideoUrl}
+                    title="Amanex Company Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full min-h-[400px]"
+                  ></iframe>
+                )}
               </div>
             </div>
           </div>

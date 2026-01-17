@@ -19,6 +19,30 @@ import HomeCare from "@/pages/home-care";
 import SearchPage from "@/pages/search";
 import { useState, useEffect } from "react";
 
+import AdminLayout from "@/pages/admin/adminLayout";
+import Dashboard from "@/pages/admin/dashboard";
+
+import CategoryList from "@/pages/admin/categories/categoryList";
+import CategoryForm from "@/pages/admin/categories/categoryForm";
+
+import VariantList from "@/pages/admin/variants/variantList";
+import VariantForm from "@/pages/admin/variants/variantForm";
+
+import ProductList from "@/pages/admin/products/productList";
+import ProductForm from "@/pages/admin/products/productForm";
+
+import JobList from "@/pages/admin/jobs/jobList";
+import JobForm from "@/pages/admin/jobs/jobForm";
+
+import OurMission from "@/pages/admin/content/ourMission";
+import OurStoryAdmin from "@/pages/admin/content/ourStory";
+
+import CategoryProducts from "@/pages/category-products";
+
+import AdminProtectedRoute from "./pages/admin/adminProtected";
+
+import AdminLogin from "./pages/admin/adminLogin";
+
 function Router() {
   return (
     <Switch>
@@ -31,12 +55,153 @@ function Router() {
       <Route path="/careers" component={Careers} />
       <Route path="/blog" component={Blog} />
       <Route path="/all-products" component={AllProducts} />
-      <Route path="/air-fresheners" component={AirFresheners} />
+      {/* <Route path="/air-fresheners" component={AirFresheners} />
       <Route path="/perfumes-body-care" component={PerfumesBodyCare} />
       <Route path="/cleaning-products" component={CleaningProducts} />
       <Route path="/personal-care" component={PersonalCare} />
-      <Route path="/home-care" component={HomeCare} />
+      <Route path="/home-care" component={HomeCare} /> */}
       <Route path="/search" component={SearchPage} />
+      <Route path="/category/:id">
+        {(params) => <CategoryProducts />}
+      </Route>
+
+
+      {/* Admin Routes */}
+      <Route path="/admin">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <Dashboard />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/login">
+        <AdminLayout>
+          <AdminLogin />
+        </AdminLayout>
+      </Route>
+
+      <Route path="/admin/categories">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <CategoryList />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/categories/new">
+          <AdminProtectedRoute>
+          <AdminLayout>
+            <CategoryForm />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/categories/:id/edit">
+        {(params) => (
+          <AdminProtectedRoute>
+            <AdminLayout>
+            <CategoryForm id={params.id} />
+          </AdminLayout>
+          </AdminProtectedRoute>
+        )}
+      </Route>
+
+      <Route path="/admin/variants">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <VariantList />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/variants/new">
+          <AdminProtectedRoute>
+          <AdminLayout>
+            <VariantForm />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/variants/:id/edit">
+        {(params) => (
+          <AdminProtectedRoute>
+            <AdminLayout>
+            <VariantForm id={params.id} />
+          </AdminLayout>
+          </AdminProtectedRoute>
+        )}
+      </Route>
+
+      <Route path="/admin/products">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <ProductList />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/products/new">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <ProductForm />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/products/:id/edit">
+        {(params) => (
+          <AdminProtectedRoute>
+            <AdminLayout>
+            <ProductForm id={params.id} />
+          </AdminLayout>
+          </AdminProtectedRoute>
+        )}
+      </Route>
+
+      <Route path="/admin/jobs">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <JobList />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/jobs/new">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <JobForm />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/jobs/:id/edit">
+        {params => (
+          <AdminProtectedRoute>
+            <AdminLayout>
+            <JobForm id={params.id} />
+          </AdminLayout>
+          </AdminProtectedRoute>
+        )}
+      </Route>
+
+      <Route path="/admin/content/mission">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <OurMission />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      <Route path="/admin/content/story">
+        <AdminProtectedRoute>
+          <AdminLayout>
+            <OurStoryAdmin />
+          </AdminLayout>
+        </AdminProtectedRoute>
+      </Route>
+
+      
       <Route component={NotFound} />
     </Switch>
   );

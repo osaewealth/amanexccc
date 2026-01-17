@@ -35,10 +35,20 @@ import insta2 from '@/assets/insta2.jpg';
 
 import NewsletterService from "@/services/newsletterService";
 
+import { CategoryService } from "@/services/categoryService";
+
+import { useLocation } from "wouter";
+
 export default function Home() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentInstaIndex, setCurrentInstaIndex] = useState(0);
   const [currentCategoryIndex, setCurrentCategoryIndex] = useState(0);
+
+  const [categories, setCategories] = useState<any[]>([]);
+
+  const [, navigate] = useLocation();
+
+  const [loading, setLoading] = useState(true);
   
   const heroText = "WE ARE\nAMANEX";
   const { typewriterIndex } = useTypewriter({ 
@@ -67,6 +77,15 @@ export default function Home() {
   ];
 
   useEffect(() => {
+    CategoryService.getAll().then(res => {
+      // Only active categories
+      const activeCategories = res.data.filter((c: any) => c.is_active);
+      setCategories(activeCategories);
+    })
+    .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => {
     console.log("Home component mounted");
   }, []);
 
@@ -92,45 +111,60 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [instaImages.length]);
 
+
   // Product categories data (only first 6)
-  const productCategories = [
-    {
-      name: "AIR FRESHENERS",
-      image: airfresherscat,
-      link: "/air-fresheners"
-    },
-    {
-      name: "PERFUMES & BODY CARE",
-      image: perfumes,
-      link: "/perfumes-body-care"
-    },
-    {
-      name: "CLEANING PRODUCTS",
-      image: glasscleaners,
-      link: "/cleaning-products"
-    },
-    {
-      name: "PERSONAL CARE",
-      image: showergelcat,
-      link: "/personal-care"
-    },
-    {
-      name: "HOME CARE",
-      image: insertspray,
-      link: "/home-care"
-    },
-    {
-      name: "FABRIC SOFTENER",
-      image: softners,
-      link: "/fabric-softener"
-    }
-  ];
+  // const productCategories = [
+  //   {
+  //     name: "AIR FRESHENERS",
+  //     image: airfresherscat,
+  //     link: "/air-fresheners"
+  //   },
+  //   {
+  //     name: "PERFUMES & BODY CARE",
+  //     image: perfumes,
+  //     link: "/perfumes-body-care"
+  //   },
+  //   {
+  //     name: "CLEANING PRODUCTS",
+  //     image: glasscleaners,
+  //     link: "/cleaning-products"
+  //   },
+  //   {
+  //     name: "PERSONAL CARE",
+  //     image: showergelcat,
+  //     link: "/personal-care"
+  //   },
+  //   {
+  //     name: "HOME CARE",
+  //     image: insertspray,
+  //     link: "/home-care"
+  //   },
+  //   {
+  //     name: "FABRIC SOFTENER",
+  //     image: softners,
+  //     link: "/fabric-softener"
+  //   }
+  // ];
+
+
+  const productCategories = categories.map((category: any) => ({
+    id: category.id,
+    name: category.name,
+    image: category.image,
+    link: category.name === "VIEW ALL PRODUCTS"
+      ? "/our-brands"
+      : `/category/${category.id}`
+  }));
+  
 
   // Create infinite loop by duplicating categories
   const infiniteCategories = [...productCategories, ...productCategories];
 
   // Auto-slide effect for category carousel
   useEffect(() => {
+
+    if (productCategories.length === 0) return;
+    
     const interval = setInterval(() => {
       setCurrentCategoryIndex(prev => (prev + 1) % productCategories.length);
     }, 6000); // Change category every 6 seconds
@@ -265,6 +299,12 @@ export default function Home() {
             </p>
           </div>
 
+          {loading && (
+            <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
+              Loading products...
+            </div>
+          )}
+
           {/* Category Carousel with Arrows */}
           <div className="relative w-full mb-12">
             {/* Left Arrow - hidden on mobile */}
@@ -294,7 +334,7 @@ export default function Home() {
                   >
                     <div 
                       className="group flex flex-col items-center text-center cursor-pointer"
-                      onClick={() => window.location.href = category.link}
+                      onClick={() => navigate(category.link)}
                     >
                       <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-coty group-hover:shadow-lg transition-all duration-300 card-elevated">
                         <img 
