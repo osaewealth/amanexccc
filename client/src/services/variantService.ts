@@ -1,5 +1,6 @@
 // services/variantService.ts
 import api from "./api";
+import adminApi from "./adminApi";
 
 export const VariantService = {
   getAll() {
@@ -11,11 +12,11 @@ export const VariantService = {
   },
 
   create(data: { name: string }) {
-    return api.post("/variants/create/", data);
+    return adminApi.post("/variants/create/", data);
   },
 
   update(id: string, data: FormData) {
-    return api.put(`/variants/${id}/update/`, data);
+    return adminApi.put(`/variants/${id}/update/`, data);
   },
 
   delete(id: string) {

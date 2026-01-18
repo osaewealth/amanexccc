@@ -1,4 +1,5 @@
 import api from "./api";
+import adminApi from "./adminApi";
 
 export const CategoryService = {
   getAll() {
@@ -10,11 +11,11 @@ export const CategoryService = {
   },
 
   create(data: FormData) {
-    return api.post("/categories/create/", data);
+    return adminApi.post("/categories/create/", data);
   },
 
   update(id: string, data: FormData) {
-    return api.put(`/categories/${id}/update/`, data);
+    return adminApi.put(`/categories/${id}/update/`, data);
   },
 
   delete(id: string) {

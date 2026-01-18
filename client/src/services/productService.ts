@@ -1,4 +1,5 @@
 import api from "./api";
+import adminApi from "./adminApi";
 
 export const ProductService = {
   getAll() {
@@ -18,11 +19,11 @@ export const ProductService = {
   },
 
   create(data: FormData) {
-    return api.post("/products/create/", data);
+    return adminApi.post("/products/create/", data);
   },
 
   update(id: string, data: FormData) {
-    return api.put(`/products/${id}/update/`, data);
+    return adminApi.put(`/products/${id}/update/`, data);
   },
 
   delete(id: string) {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "@/services/api";
+import adminApi from "@/services/adminApi";
 
 export default function AdminSettings() {
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ export default function AdminSettings() {
   const [loadingPassword, setLoadingPassword] = useState(false);
 
   useEffect(() => {
-    api.get("/admin/profile/")
+    adminApi.get("/admin/profile/")
       .then(res => {
         setUsername(res.data.username);
         setEmail(res.data.email);
@@ -32,7 +33,7 @@ export default function AdminSettings() {
     setLoadingProfile(true);
 
     try {
-      await api.put("/admin/profile/", { username, email });
+      await adminApi.put("/admin/profile/", { username, email });
       alert("Profile updated successfully");
     } catch (err: any) {
       setProfileError(
@@ -60,14 +61,14 @@ export default function AdminSettings() {
     setLoadingPassword(true);
 
     try {
-      await api.post("/admin/change-password/", {
+      await adminApi.post("/admin/change-password/", {
         current_password: currentPassword,
         new_password: newPassword,
       });
 
       alert("Password changed successfully. Please log in again.");
 
-      localStorage.removeItem("adminToken");
+      localStorage.removeItem("admin_access_token");
       window.location.href = "/admin/login";
     } catch (err: any) {
       setPasswordError(

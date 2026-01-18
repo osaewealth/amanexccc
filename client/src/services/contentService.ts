@@ -1,19 +1,20 @@
 import api from "./api";
+import adminApi from "./adminApi";
 
 export const ContentService = {
   getMissionVideo() {
     return api.get("/mission-video/");
   },
   updateMissionVideo() {
-    return api.post("/mission-video/update");
+    return adminApi.post("/mission-video/update");
   },
 
   getStoryVideo() {
     return api.get("/story-video/");
   },
-  
+
   updateStoryVideo() {
-    return api.post("/story-video/update/");
+    return adminApi.post("/story-video/update/");
   },
 
 };

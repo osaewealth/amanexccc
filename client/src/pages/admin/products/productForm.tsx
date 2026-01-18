@@ -64,13 +64,13 @@ export default function ProductForm({ id }: { id?: string }) {
     }
   }, [id]);
 
-  if (loadingCategories || loadingProduct || loadingVariants) {
-    return (
-      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
-        Loading...
-      </div>
-    );
-  }
+//   if (loadingCategories || loadingProduct || loadingVariants) {
+//     return (
+//       <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+//         Loading...
+//       </div>
+//     );
+//   }
 
   if (error) {
     return <p className="text-red-500 text-sm">{error}</p>;

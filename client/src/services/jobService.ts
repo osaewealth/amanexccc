@@ -1,5 +1,6 @@
 // services/jobService.ts
 import api from "./api";
+import adminApi from "./adminApi";
 
 export const JobService = {
   getAll() {
@@ -11,15 +12,15 @@ export const JobService = {
   },
 
   create(data: any) {
-    return api.post("/jobs/create/", data);
+    return adminApi.post("/jobs/create/", data);
   },
 
   update(id: string, data: any) {
-    return api.put(`/jobs/${id}/update/`, data);
+    return adminApi.put(`/jobs/${id}/update/`, data);
   },
 
   toggle(id: string) {
-    return api.patch(`/jobs/${id}/toggle/`);
+    return adminApi.patch(`/jobs/${id}/toggle/`);
   },
 
   delete(id: string) {

@@ -25,13 +25,13 @@ export default function OurMission() {
       }
     };
 
-    if (loading) {
-        return (
-          <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
-            Loading...
-          </div>
-        );
-      }
+    // if (loading) {
+    //     return (
+    //       <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+    //         Loading...
+    //       </div>
+    //     );
+    //   }
     
       if (error) {
         return <p className="text-red-500 text-sm">{error}</p>;

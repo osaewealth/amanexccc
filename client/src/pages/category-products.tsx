@@ -17,7 +17,10 @@ export default function CategoryProducts() {
     if (!categoryId) return;
 
     ProductService.getCategoryProducts(categoryId)
-      .then(res => setProducts(res.data))
+      .then(res => {
+        const activeProducts = res.data.filter((p: any) => p.is_active);
+        setProducts(activeProducts)
+      })
       .finally(() => setLoading(false));
   }, [categoryId]);
 
