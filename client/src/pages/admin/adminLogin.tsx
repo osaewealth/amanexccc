@@ -11,7 +11,7 @@ export default function AdminLogin() {
   
 
   useEffect(() => {
-    const token = localStorage.getItem("adminToken");
+    const token = localStorage.getItem("admin_access_token");
 
     if (token) {
         navigate("/admin");

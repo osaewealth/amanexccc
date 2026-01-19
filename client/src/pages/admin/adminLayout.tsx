@@ -7,7 +7,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const navigate = useLocation();
 
     const logout = () => {
-        localStorage.removeItem("adminToken");
+        localStorage.removeItem("admin_access_token");
         localStorage.removeItem("adminUser");
         window.location.href = "/admin/login";
       };
