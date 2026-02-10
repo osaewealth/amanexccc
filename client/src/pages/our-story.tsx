@@ -17,6 +17,8 @@ import customerFocusIcon from '@/icons/customerfocus.png';
 import sustainabilityIcon from '@/icons/sustainability.png';
 import innovationIcon from '@/icons/innovation.png';
 
+import { ContentService } from "@/services/contentService";
+
 export default function OurStory() {
   const videoRef = useYouTubeAutoplay({ threshold: 0.6, rootMargin: '0px 0px -100px 0px' });
   
@@ -71,6 +73,32 @@ export default function OurStory() {
 
   // Refs for Our Values section animations
   const valuesRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const [missionVideoUrl, setMissionVideoUrl] = useState<string | null>(null);
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    ContentService.getMissionVideo().then((res) => {
+      const youtubeUrl = res.data.youtube_url;
+  
+      // Convert youtu.be or watch?v= to embed format
+      const videoId = youtubeUrl.includes("youtu.be")
+        ? youtubeUrl.split("youtu.be/")[1]
+        : youtubeUrl.split("v=")[1];
+  
+      const embedUrl = `https://www.youtube.com/embed/${videoId}?enablejsapi=1`;
+  
+      setMissionVideoUrl(embedUrl);
+    })
+    .catch(() => {
+      setError("Failed to load video url");
+    })
+    .finally(() => setLoading(false));;
+  }, []);
+  
 
   // Intersection Observer for Values Section Animation
   useEffect(() => {
@@ -227,6 +255,14 @@ export default function OurStory() {
     }
   ];
 
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
+        Loading...
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen">
       <StandardHeader />
@@ -304,17 +340,22 @@ export default function OurStory() {
             </div>
             <div className="relative">
               <div className="rounded-lg shadow-xl overflow-hidden h-full">
-                <iframe
-                  ref={videoRef}
-                  width="100%"
-                  height="100%"
-                  src="https://www.youtube.com/embed/ZhAm4mARwE0?si=76vyI8PRc7WRMWjO&enablejsapi=1&origin=https://amanex.com"
-                  title="Amanex Company Video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowFullScreen
-                  className="w-full h-full min-h-[500px]"
-                ></iframe>
+                {error && (
+                  <p className="text-red-500 text-sm">{error}</p>
+                )}
+                {missionVideoUrl && (
+                  <iframe
+                    ref={videoRef}
+                    width="100%"
+                    height="100%"
+                    src={missionVideoUrl}
+                    title="Amanex Company Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    className="w-full h-full min-h-[500px]"
+                  ></iframe>
+                )}
               </div>
             </div>
           </div>

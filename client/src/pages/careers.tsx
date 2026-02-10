@@ -8,6 +8,8 @@ import Footer from "@/components/Footer";
 import StandardHeader from "@/components/StandardHeader";
 import ScrollToTop from "@/components/ScrollToTop";
 
+import { JobService } from "@/services/jobService";
+
 export default function Careers() {
   const [isBenefitsVisible, setIsBenefitsVisible] = useState(false);
   const [isJobsVisible, setIsJobsVisible] = useState(false);
@@ -19,111 +21,140 @@ export default function Careers() {
   const jobsRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
 
+  const [loadingJobs, setLoadingJobs] = useState(true);
+
+  const [error, setError] = useState("");
+
+
   // Default job openings data
-  const defaultJobs = [
-    {
-      id: 1,
-      title: "Sales Representative",
-      department: "Sales & Marketing",
-      location: "Accra, Ghana",
-      type: "Full-time",
-      experience: "2-3 years",
-      description: "We're looking for a dynamic Sales Representative to join our team and help drive growth in the Ghanaian market.",
-      requirements: [
-        "Bachelor's degree in Business, Marketing, or related field",
-        "2-3 years of sales experience in FMCG industry",
-        "Strong communication and negotiation skills",
-        "Proven track record of meeting sales targets",
-        "Knowledge of the local market and consumer behavior"
-      ],
-      responsibilities: [
-        "Develop and maintain relationships with key clients",
-        "Achieve monthly and quarterly sales targets",
-        "Conduct market research and competitor analysis",
-        "Present product demonstrations and training sessions",
-        "Prepare sales reports and forecasts"
-      ]
-    },
-    {
-      id: 2,
-      title: "Marketing Coordinator",
-      department: "Marketing",
-      location: "Accra, Ghana",
-      type: "Full-time",
-      experience: "1-2 years",
-      description: "Join our marketing team to help create compelling campaigns that connect with our customers.",
-      requirements: [
-        "Bachelor's degree in Marketing, Communications, or related field",
-        "1-2 years of marketing experience",
-        "Proficiency in digital marketing tools and platforms",
-        "Creative thinking and problem-solving skills",
-        "Experience with social media management"
-      ],
-      responsibilities: [
-        "Assist in developing marketing campaigns and strategies",
-        "Manage social media accounts and content creation",
-        "Coordinate with external agencies and vendors",
-        "Track and analyze campaign performance metrics",
-        "Support event planning and execution"
-      ]
-    },
-    {
-      id: 3,
-      title: "Supply Chain Specialist",
-      department: "Operations",
-      location: "Accra, Ghana",
-      type: "Full-time",
-      experience: "3-5 years",
-      description: "Help optimize our supply chain operations to ensure efficient product distribution across Ghana.",
-      requirements: [
-        "Bachelor's degree in Supply Chain Management, Logistics, or related field",
-        "3-5 years of supply chain experience",
-        "Knowledge of inventory management systems",
-        "Strong analytical and problem-solving skills",
-        "Experience with ERP systems"
-      ],
-      responsibilities: [
-        "Manage inventory levels and forecasting",
-        "Coordinate with suppliers and logistics partners",
-        "Optimize warehouse operations and distribution",
-        "Monitor and improve supply chain performance",
-        "Ensure compliance with quality standards"
-      ]
-    },
-    {
-      id: 4,
-      title: "Customer Service Representative",
-      department: "Customer Service",
-      location: "Accra, Ghana",
-      type: "Full-time",
-      experience: "1-2 years",
-      description: "Be the voice of our company and help deliver exceptional customer experiences.",
-      requirements: [
-        "High school diploma or equivalent",
-        "1-2 years of customer service experience",
-        "Excellent communication skills in English and local languages",
-        "Patient and empathetic approach to customer issues",
-        "Ability to work in shifts"
-      ],
-      responsibilities: [
-        "Handle customer inquiries and complaints",
-        "Process orders and track shipments",
-        "Provide product information and support",
-        "Maintain customer records and update databases",
-        "Escalate complex issues to appropriate departments"
-      ]
-    }
-  ];
+  // const defaultJobs = [
+  //   {
+  //     id: 1,
+  //     title: "Sales Representative",
+  //     department: "Sales & Marketing",
+  //     location: "Accra, Ghana",
+  //     type: "Full-time",
+  //     experience: "2-3 years",
+  //     description: "We're looking for a dynamic Sales Representative to join our team and help drive growth in the Ghanaian market.",
+  //     requirements: [
+  //       "Bachelor's degree in Business, Marketing, or related field",
+  //       "2-3 years of sales experience in FMCG industry",
+  //       "Strong communication and negotiation skills",
+  //       "Proven track record of meeting sales targets",
+  //       "Knowledge of the local market and consumer behavior"
+  //     ],
+  //     responsibilities: [
+  //       "Develop and maintain relationships with key clients",
+  //       "Achieve monthly and quarterly sales targets",
+  //       "Conduct market research and competitor analysis",
+  //       "Present product demonstrations and training sessions",
+  //       "Prepare sales reports and forecasts"
+  //     ]
+  //   },
+  //   {
+  //     id: 2,
+  //     title: "Marketing Coordinator",
+  //     department: "Marketing",
+  //     location: "Accra, Ghana",
+  //     type: "Full-time",
+  //     experience: "1-2 years",
+  //     description: "Join our marketing team to help create compelling campaigns that connect with our customers.",
+  //     requirements: [
+  //       "Bachelor's degree in Marketing, Communications, or related field",
+  //       "1-2 years of marketing experience",
+  //       "Proficiency in digital marketing tools and platforms",
+  //       "Creative thinking and problem-solving skills",
+  //       "Experience with social media management"
+  //     ],
+  //     responsibilities: [
+  //       "Assist in developing marketing campaigns and strategies",
+  //       "Manage social media accounts and content creation",
+  //       "Coordinate with external agencies and vendors",
+  //       "Track and analyze campaign performance metrics",
+  //       "Support event planning and execution"
+  //     ]
+  //   },
+  //   {
+  //     id: 3,
+  //     title: "Supply Chain Specialist",
+  //     department: "Operations",
+  //     location: "Accra, Ghana",
+  //     type: "Full-time",
+  //     experience: "3-5 years",
+  //     description: "Help optimize our supply chain operations to ensure efficient product distribution across Ghana.",
+  //     requirements: [
+  //       "Bachelor's degree in Supply Chain Management, Logistics, or related field",
+  //       "3-5 years of supply chain experience",
+  //       "Knowledge of inventory management systems",
+  //       "Strong analytical and problem-solving skills",
+  //       "Experience with ERP systems"
+  //     ],
+  //     responsibilities: [
+  //       "Manage inventory levels and forecasting",
+  //       "Coordinate with suppliers and logistics partners",
+  //       "Optimize warehouse operations and distribution",
+  //       "Monitor and improve supply chain performance",
+  //       "Ensure compliance with quality standards"
+  //     ]
+  //   },
+  //   {
+  //     id: 4,
+  //     title: "Customer Service Representative",
+  //     department: "Customer Service",
+  //     location: "Accra, Ghana",
+  //     type: "Full-time",
+  //     experience: "1-2 years",
+  //     description: "Be the voice of our company and help deliver exceptional customer experiences.",
+  //     requirements: [
+  //       "High school diploma or equivalent",
+  //       "1-2 years of customer service experience",
+  //       "Excellent communication skills in English and local languages",
+  //       "Patient and empathetic approach to customer issues",
+  //       "Ability to work in shifts"
+  //     ],
+  //     responsibilities: [
+  //       "Handle customer inquiries and complaints",
+  //       "Process orders and track shipments",
+  //       "Provide product information and support",
+  //       "Maintain customer records and update databases",
+  //       "Escalate complex issues to appropriate departments"
+  //     ]
+  //   }
+  // ];
 
   // Load job openings from localStorage or use defaults
+  // useEffect(() => {
+  //   const savedJobs = localStorage.getItem('amanexJobs');
+  //   if (savedJobs && JSON.parse(savedJobs).length > 0) {
+  //     setJobOpenings(JSON.parse(savedJobs));
+  //   } else {
+  //     setJobOpenings(defaultJobs);
+  //   }
+  // }, []);
+
   useEffect(() => {
-    const savedJobs = localStorage.getItem('amanexJobs');
-    if (savedJobs && JSON.parse(savedJobs).length > 0) {
-      setJobOpenings(JSON.parse(savedJobs));
-    } else {
-      setJobOpenings(defaultJobs);
-    }
+    JobService.getAll().then((res) => {
+      const formattedJobs = res.data
+        .filter((job: any) => job.is_open)
+        .map((job: any) => ({
+          ...job,
+          type: job.job_type === "full_time" ? "Full-time" : "Part-time",
+          requirements: job.requirements
+          .split("\r\n")
+          .filter((line: string) => line.trim() !== ""),
+          responsibilities: job.responsibilities
+          .split("\r\n")
+          .filter((line: string) => line.trim() !== ""),        
+        }));
+  
+      setJobOpenings(formattedJobs);
+    })
+    .catch(() => {
+      setError("Failed to load categories");
+    })
+    .finally(() => setLoadingJobs(false));
   }, []);
+  
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -365,6 +396,7 @@ export default function Careers() {
         </div>
       </section>
 
+
       {/* Job Openings Section */}
       <section ref={jobsRef} className="py-20">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -374,6 +406,18 @@ export default function Careers() {
               Explore our current job opportunities and find the perfect role for your career growth.
             </p>
           </div>
+
+          {loadingJobs && <p className="text-center text-gray-500">Loading job openings...</p>}
+
+          {!loadingJobs && jobOpenings.length === 0 && (
+            <p className="text-center text-gray-500">
+              No job openings at the moment. Please check back later.
+            </p>
+          )}
+
+          {error && (
+            <p className="text-red-500 text-sm">{error}</p>
+          )}
           
           <div className="space-y-8">
             {jobOpenings.map((job, index) => (
