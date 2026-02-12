@@ -144,6 +144,9 @@ export default function HomeHeader() {
             <a href="/our-impact" className={`relative font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
               isScrolled ? 'text-coty-navy after:bg-coty-navy' : 'text-white after:bg-white'
             } ${isActiveRoute('/our-impact') ? 'after:w-full' : ''} hover:after:w-full`}>Our Impact</a>
+            <a href="/csr" className={`relative font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
+              isScrolled ? 'text-coty-navy after:bg-coty-navy' : 'text-white after:bg-white'
+            } ${isActiveRoute('/csr') ? 'after:w-full' : ''} hover:after:w-full`}>CSR</a>
             <a href="/contact-us" className={`relative font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
               isScrolled ? 'text-coty-navy after:bg-coty-navy' : 'text-white after:bg-white'
             } ${isActiveRoute('/contact-us') ? 'after:w-full' : ''} hover:after:w-full`}>Contact Us</a>

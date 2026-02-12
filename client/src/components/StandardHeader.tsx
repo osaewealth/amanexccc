@@ -144,6 +144,9 @@ export default function StandardHeader() {
             <a href="/our-impact" className={`relative text-coty-navy font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-coty-navy after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
               isActiveRoute('/our-impact') ? 'after:w-full' : ''
             } hover:after:w-full`}>Our Impact</a>
+            <a href="/csr" className={`relative text-coty-navy font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-coty-navy after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
+              isActiveRoute('/csr') ? 'after:w-full' : ''
+            } hover:after:w-full`}>CSR</a>
             <a href="/contact-us" className={`relative text-coty-navy font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-coty-navy after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
               isActiveRoute('/contact-us') ? 'after:w-full' : ''
             } hover:after:w-full`}>Contact Us</a>

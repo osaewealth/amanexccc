@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRoute } from "wouter";
+import { useRoute, useLocation } from "wouter";
 import StandardHeader from "@/components/StandardHeader";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
@@ -13,6 +13,8 @@ export default function CategoryProducts() {
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const [location, setLocation] = useLocation();
+
   useEffect(() => {
     if (!categoryId) return;
 
@@ -23,6 +25,10 @@ export default function CategoryProducts() {
       })
       .finally(() => setLoading(false));
   }, [categoryId]);
+
+  const handleProductClick = (productId: string) => {
+    setLocation(`/product/${productId}`);
+  };
 
   if (loading) {
     return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
@@ -70,7 +76,7 @@ export default function CategoryProducts() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {products.map((product) => (
-              <Card key={product.id} className="group hover:shadow-2xl transition-all duration-500 transform hover:scale-105">
+              <Card key={product.id} className="group hover:shadow-2xl transition-all duration-500 transform hover:scale-105 cursor-pointer" onClick={() => handleProductClick(product.id)}>
                 <div className="relative overflow-hidden">
                   <img
                     src={product.image}

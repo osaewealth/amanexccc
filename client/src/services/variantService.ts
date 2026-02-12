@@ -4,22 +4,23 @@ import adminApi from "./adminApi";
 
 export const VariantService = {
   getAll() {
-    return api.get("/variants/");
+    return api.get("/variant-types/");
   },
 
   getOne(id: string) {
-    return api.get(`/variants/${id}/`);
+    return api.get(`/variant-types/${id}/`);
   },
 
-  create(data: { name: string }) {
-    return adminApi.post("/variants/create/", data);
+  create(data: FormData | { name: string }) {
+    return adminApi.post("/variant-types/create/", data);
   },
 
   update(id: string, data: FormData) {
-    return adminApi.put(`/variants/${id}/update/`, data);
+    return api.put(`/variant-types/${id}/update/`, data);
   },
 
   delete(id: string) {
-    return api.delete(`/variants/${id}/delete/`);
+    return api.delete(`/variant-types/${id}/delete/`);
   }
 };
+

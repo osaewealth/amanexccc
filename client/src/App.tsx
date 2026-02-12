@@ -7,6 +7,7 @@ import About from "@/pages/about";
 import OurStory from "@/pages/our-story";
 import OurBrands from "@/pages/our-brands";
 import OurImpact from "@/pages/our-impact";
+import CSR from "@/pages/CSR";
 import ContactUs from "@/pages/contact-us";
 import Careers from "@/pages/careers";
 import Blog from "@/pages/blog";
@@ -38,6 +39,7 @@ import OurMission from "@/pages/admin/content/ourMission";
 import OurStoryAdmin from "@/pages/admin/content/ourStory";
 
 import CategoryProducts from "@/pages/category-products";
+import ProductDetail from "@/pages/product-detail";
 
 import AdminProtectedRoute from "./pages/admin/adminProtected";
 
@@ -53,6 +55,7 @@ function Router() {
       <Route path="/our-story" component={OurStory} />
       <Route path="/our-brands" component={OurBrands} />
       <Route path="/our-impact" component={OurImpact} />
+      <Route path="/csr" component={CSR} />
       <Route path="/contact-us" component={ContactUs} />
       <Route path="/careers" component={Careers} />
       <Route path="/blog" component={Blog} />
@@ -65,6 +68,9 @@ function Router() {
       <Route path="/search" component={SearchPage} />
       <Route path="/category/:id">
         {(params) => <CategoryProducts />}
+      </Route>
+      <Route path="/product/:id">
+        {(params) => <ProductDetail />}
       </Route>
 
 

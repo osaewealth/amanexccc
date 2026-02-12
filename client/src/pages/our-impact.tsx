@@ -382,7 +382,7 @@ export default function OurImpact() {
                 and quality manufacturing in the region. We're committed to supporting local suppliers and 
                 contributing to the economic development of Greater Accra.
               </p>
-              <a href="/our-story" className="w-fit flex items-center gap-4 px-8 py-4 bg-coty-navy text-white text-md font-medium rounded-br-3xl hover:bg-transparent hover:text-coty-navy border border-coty-navy transition-colors duration-300">
+              <a href="/csr" className="w-fit flex items-center gap-4 px-8 py-4 bg-coty-navy text-white text-md font-medium rounded-br-3xl hover:bg-transparent hover:text-coty-navy border border-coty-navy transition-colors duration-300">
                 LEARN MORE
                 <ArrowRight className="text-2xl" />
               </a>

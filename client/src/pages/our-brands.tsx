@@ -124,10 +124,12 @@ export default function OurBrands() {
   
   const [categories, setCategories] = useState([]);
   const [bestSellers, setBestSellers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [categoryLoading, setCategoryLoading] = useState(true);
+  const [productLoading, setProductLoading] = useState(true);
 
   const [, navigate] = useLocation();
-  const [error, setError] = useState("");
+  const [categoryError, setCategoryError] = useState("");
+  const [productError, setProductError] = useState("");
 
   useEffect(() => {
     CategoryService.getAll().then(res => {
@@ -136,23 +138,27 @@ export default function OurBrands() {
       setCategories(activeCategories);
     })
     .catch(() => {
-      setError("Failed to load categories");
+      setCategoryError("Failed to load categories");
     })
-    .finally(() => setLoading(false));
+    .finally(() => setCategoryLoading(false));
 
 
     ProductService.getBestSellers()
       .then(res => {
-        setLoading(true);
+        setProductLoading(true);
         // only active products (safe guard)
         const activeProducts = res.data.filter((p: any) => p.is_active);
         setBestSellers(activeProducts);
       })
       .catch(() => {
-        setError("Failed to load best selling products");
+        setProductError("Failed to load best selling products");
       })
-      .finally(() => setLoading(false));
+      .finally(() => setProductLoading(false));
   }, []);
+
+   const handleProductClick = (productId: string) => {
+    navigate(`/product/${productId}`);
+  };
 
 
   const heroText = "OUR\nBRANDS";
@@ -165,16 +171,6 @@ export default function OurBrands() {
   return (
     <div className="min-h-screen">
       <StandardHeader />
-
-      {loading && (
-        <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
-          Loading...
-        </div>
-      )}
-
-      {error && (
-        <p className="text-red-500 text-sm">{error}</p>
-      )}
 
       {/* Hero Section */}
       <section 
@@ -238,6 +234,16 @@ export default function OurBrands() {
           </div>
 
           <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {categoryLoading && (
+              <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
+                Loading...
+              </div>
+            )}
+
+            {categoryError && (
+              <p className="text-red-500 text-sm">{categoryError}</p>
+            )}
+            
             {categories.map((category: any) => (
               <div
                 key={category.id}
@@ -297,8 +303,18 @@ export default function OurBrands() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {productLoading && (
+              <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
+                Loading...
+              </div>
+            )}
+
+            {productError && (
+              <p className="text-red-500 text-sm">{productError}</p>
+            )}
+
             {bestSellers.map((product: any) => (
-              <Card key={product.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 border-2 border-transparent hover:border-coty-navy/20 group">
+              <Card key={product.id} className="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1 border-2 border-transparent hover:border-coty-navy/20 group"  onClick={() => handleProductClick(product.id)}>
                 <div className="text-center mb-4">
                   <div className="w-16 h-16 rounded-full overflow-hidden mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
                     <img 
@@ -333,7 +349,7 @@ export default function OurBrands() {
       </section>
 
       {/* Quality Promise Section */}
-      <section className="py-20 bg-white">
+      <section className="pb-20 bg-white">
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>

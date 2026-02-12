@@ -255,13 +255,6 @@ export default function OurStory() {
     }
   ];
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center h-64 text-coty-navy font-semibold">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen">
@@ -340,6 +333,10 @@ export default function OurStory() {
             </div>
             <div className="relative">
               <div className="rounded-lg shadow-xl overflow-hidden h-full">
+                {loading && (
+                  <p className="text-gray-500 text-sm">Loading...</p>
+                )}
+                
                 {error && (
                   <p className="text-red-500 text-sm">{error}</p>
                 )}

@@ -28,6 +28,7 @@ import sanitizer60ml from "@/assets/productimages/sanitizer-60ml.png";
 import sanitizer350ml from "@/assets/productimages/sanitizer-350ml.png";
 
 import { ProductService } from "@/services/productService";
+import { useLocation } from 'wouter';
 
 
 export default function Fragrance() {
@@ -191,6 +192,8 @@ export default function Fragrance() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [location, setLocation] = useLocation();
+
 
   useEffect(() => {
     ProductService.getAll()
@@ -206,20 +209,14 @@ export default function Fragrance() {
   }, []);  
 
 
+  const handleProductClick = (productId: string) => {
+    setLocation(`/product/${productId}`);
+  };
+
+
   return (
     <div className="min-h-screen">
       <StandardHeader />
-
-      {loading && (
-        <div className="py-20 text-center text-coty-gray">
-          Loading products...
-        </div>
-      )}
-
-      {error && (
-        <p className="text-red-500 text-sm">{error}</p>
-      )}
-
 
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-50 to-pink-50">
@@ -251,8 +248,18 @@ export default function Fragrance() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loading && (
+              <div className="py-20 text-center text-coty-gray">
+                Loading products...
+              </div>
+            )}
+
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
+            )}
+
             {products.map((product) => (
-              <Card key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+              <Card key={product.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300" onClick={() => handleProductClick(product.id)}>
                 <img 
                   src={product.image} 
                   alt={product.name}
