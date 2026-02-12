@@ -12,22 +12,23 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
-const adminApi = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-});
-
-
-const refreshClient = axios.create({
-  baseURL: "http://127.0.0.1:8000/api",
-});
 // const adminApi = axios.create({
-//   baseURL: "https://amanex-backend.onrender.com/api",
+//   baseURL: "http://127.0.0.1:8000/api",
 // });
 
 
 // const refreshClient = axios.create({
-//   baseURL: "https://amanex-backend.onrender.com/api",
+//   baseURL: "http://127.0.0.1:8000/api",
 // });
+
+const adminApi = axios.create({
+  baseURL: "https://amanex-backend.onrender.com/api",
+});
+
+
+const refreshClient = axios.create({
+  baseURL: "https://amanex-backend.onrender.com/api",
+});
 
 // REQUEST: attach access token
 adminApi.interceptors.request.use(config => {
