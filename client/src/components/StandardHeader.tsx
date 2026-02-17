@@ -129,9 +129,6 @@ export default function StandardHeader() {
 
           {/* Desktop Navigation - Show on desktop (1080px+) */}
           <nav className="hidden lg:flex items-center space-x-8">
-            <a href="/" className={`relative text-coty-navy font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-coty-navy after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
-              isActiveRoute('/') ? 'after:w-full' : ''
-            } hover:after:w-full`}>Home</a>
             <a href="/about-us" className={`relative text-coty-navy font-medium transition-all duration-300 hover:after:w-full after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-coty-navy after:left-0 after:-bottom-1 after:transition-all after:duration-300 hover:scale-105 ${
               isActiveRoute('/about-us') ? 'after:w-full' : ''
             } hover:after:w-full`}>About Us</a>
@@ -224,15 +221,6 @@ export default function StandardHeader() {
               {/* Mobile Menu Panel */}
               <div className="lg:hidden bg-white/90 backdrop-blur-md shadow-2xl rounded-2xl mt-2 py-6 border border-white/20 relative z-50">
                 <nav className="flex flex-col space-y-6 px-6">
-                  <a 
-                    href="/" 
-                    onClick={closeMobileMenu}
-                    className={`text-center text-lg font-medium transition-all duration-300 hover:scale-105 hover:text-coty-mint transform hover:-translate-y-1 ${
-                      isActiveRoute('/') ? 'text-coty-navy font-semibold' : 'text-coty-navy'
-                    }`}
-                  >
-                    Home
-                  </a>
                   <a 
                     href="/about-us" 
                     onClick={closeMobileMenu}
