@@ -263,7 +263,7 @@ export default function Fragrance() {
                 <img 
                   src={product.image} 
                   alt={product.name}
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-contain"
                 />
                 <CardContent className="p-6">
                   <div className="flex justify-between items-center mb-3">
