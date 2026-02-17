@@ -233,7 +233,7 @@ export default function OurBrands() {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             {categoryLoading && (
               <div className="min-h-screen flex items-center justify-center text-coty-navy font-semibold">
                 Loading...
@@ -247,45 +247,29 @@ export default function OurBrands() {
             {categories.map((category: any) => (
               <div
                 key={category.id}
-                className="group flex flex-col items-center text-center cursor-pointer"
+                className="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden border border-gray-100"
                 onClick={() => navigate(`/category/${category.id}`)}
               >
-                <div
-                  className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow  duration-300">
+                <div className="w-full h-32 overflow-hidden flex items-center justify-center bg-gray-50">
                   <img
                     src={category.image}
                     alt={category.name}
-                    className="w-full h-full object-cover"
+                    className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300 p-2"
                   />
                 </div>
-                <h3 className="text-base sm:text-lg font-semibold text-coty-navy">
-                  {category.name}
-                </h3>
+                <div className="p-3">
+                  <h3 className="text-base font-semibold text-coty-navy text-center group-hover:text-coty-gold transition-colors duration-300">
+                    {category.name}
+                  </h3>
+                </div>
               </div>
             ))}
-
-            {/* View All */}
-            <div
-              className="group flex flex-col items-center text-center cursor-pointer"
-              onClick={() => navigate("/all-products")}
-            >
-              <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full overflow-hidden mb-4 flex items-center justify-center shadow-md group-hover:shadow-lg transition-shadow duration-300">
-                <img
-                  src={allproducts}
-                  alt="View All Products"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <h3 className="text-base sm:text-lg font-semibold text-coty-navy">
-                VIEW ALL PRODUCTS
-              </h3>
-            </div>
           </div>
 
 
           <div className="text-center">
-            <a href="/contact-us" className="inline-flex items-center gap-2 px-6 py-3 bg-coty-navy text-white font-medium rounded-lg hover:bg-coty-gold hover:text-coty-navy transition-all duration-300 group shadow-md">
-              CONTACT US FOR MORE INFO
+            <a href="/all-products" className="inline-flex items-center gap-2 px-6 py-3 bg-coty-navy text-white font-medium rounded-lg hover:bg-coty-gold hover:text-coty-navy transition-all duration-300 group shadow-md">
+              VIEW ALL PRODUCTS
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </a>
           </div>
